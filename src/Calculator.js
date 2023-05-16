@@ -75,6 +75,7 @@ const Calculator = () => {
       <form>
         <input type="text" value={result}/>
       </form>
+      {/* the Calculator button start from here */}
       <div className='keypad'>
         <button className='highlight' onClick={handleBack}>C</button>
         <button onClick={handleComp}>+/-</button>
