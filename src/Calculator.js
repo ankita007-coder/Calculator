@@ -31,52 +31,30 @@ const Calculator = () => {
   const handleComp = () => {
     setResult(prevResult => {
       if (prevResult !== "") {
-        // Check if the last character is a digit or closing parenthesis
-        const lastChar = prevResult.charAt(prevResult.length - 1);
-        if (!isNaN(lastChar) || lastChar === ')') {
-          let openParenthesesCount = 0;
-          let closeParenthesesCount = 0;
-          let i = prevResult.length - 1;
+        const regex = /(-?\d+\.?\d*)$/;
+        const matches = prevResult.match(regex);
   
-          // Traverse backwards to find the corresponding opening parenthesis
-          while (i >= 0) {
-            const char = prevResult.charAt(i);
-            if (char === ')') {
-              closeParenthesesCount++;
-            } else if (char === '(') {
-              openParenthesesCount++;
-            }
-  
-            if (openParenthesesCount === closeParenthesesCount) {
-              break;
-            }
-  
-            i--;
+        if (matches && matches.length > 0) {
+          const lastNumber = matches[0];
+          let toggledNumber = 0;
+          if(lastNumber>0){
+            toggledNumber = parseFloat(lastNumber) * -1;
           }
-  
-          // If the opening parenthesis is found, toggle the sign inside it
-          if (i >= 0 && prevResult.charAt(i - 1) === '-') {
-            return (
-              prevResult.slice(0, i - 1) +
-              '+' +
-              prevResult.slice(i, prevResult.length)
-            );
-          } else {
-            return (
-              prevResult.slice(0, i) +
-              '(-' +
-              prevResult.slice(i, prevResult.length) +
-              ')'
-            );
+          else{
+            toggledNumber = '+'.concat(parseFloat(lastNumber) * -1)
           }
+          const updatedResult = prevResult.slice(0, -lastNumber.length) + toggledNumber;
+          return updatedResult;
         } else {
-          // Append a minus sign to the expression
-          return prevResult.concat("-");
+          return prevResult;
         }
       }
+  
       return prevResult;
     });
   };
+  
+  
   
 //handling the backspace button
   const handleBack =()=>{
